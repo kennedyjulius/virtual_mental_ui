@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -16,6 +14,7 @@ class HomeSreeen extends StatefulWidget {
 class _HomeSreeenState extends State<HomeSreeen> {
   late final SpeechToText speechToText;
   late String lastWords;
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -97,18 +96,18 @@ class _HomeSreeenState extends State<HomeSreeen> {
             Container(
               height: 120,
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 40).copyWith(top: 30),
+              margin: const EdgeInsets.symmetric(horizontal: 40)
+                  .copyWith(top: 30),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Pallete.borderColor,
                 ),
-                borderRadius:
-                    BorderRadius.circular(20).copyWith(topLeft: Radius.zero),
+                borderRadius: BorderRadius.circular(20)
+                    .copyWith(topLeft: Radius.zero),
               ),
-              child: Text(
+              child: const Text(
                 "Good Afternoon, How can I help you with your Mental Health Today ?.",
-                style: const TextStyle(
+                style: TextStyle(
                   color: Pallete.mainFontColor,
                   fontSize: 25,
                 ),
@@ -154,7 +153,8 @@ class _HomeSreeenState extends State<HomeSreeen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Pallete.firstSuggestionBoxColor,
         onPressed: () async {
-          if (await speechToText.hasPermission && speechToText.isNotListening) {
+          if (await speechToText.hasPermission &&
+              speechToText.isNotListening) {
             await startListening();
           } else if (speechToText.isListening) {
             await stopListening();
@@ -163,6 +163,48 @@ class _HomeSreeenState extends State<HomeSreeen> {
           }
         },
         child: const Icon(Icons.mic),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 30,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25),
+                      gapPadding: 8,
+                      borderSide: BorderSide(
+                        color: Colors.amber
+                      )
+                    ),
+                    hintText: 'Enter your message...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                        color: Colors.green,
+                        width: 1.0,
+                      )
+                    ),
+                    fillColor: Colors.grey,
+                    enabled: true,
+                    prefixIcon: Icon(Icons.emoji_emotions),
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  // Add your send message logic here
+                },
+                icon: Icon(Icons.send),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
