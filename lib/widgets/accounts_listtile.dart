@@ -22,7 +22,14 @@ class CustomListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ontap,
-      child: Card(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.blue.shade200,
+            style: BorderStyle.solid
+          )
+        ),
         child: ListTile(
           leading: Container(
             height: 40,

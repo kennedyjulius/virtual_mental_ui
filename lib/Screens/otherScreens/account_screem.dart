@@ -18,34 +18,43 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Pallete.firstSuggestionBoxColor,
-            ),
-            height: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 52,
-                  backgroundImage: AssetImage("assets/virtualAssistance.png"),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextWidget(
-                    text: "@marvinmc",
-                    size: 14,
-                    color: Colors.black12,
-                    fontWeight: FontWeight.w100)
-              ],
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              height: 300,
+              width: double.maxFinite,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 52,
+                    backgroundImage: AssetImage("assets/virtualAssistant.png"),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextWidget(
+                      text: "@marvinmc",
+                      size: 14,
+                      color: Colors.black12,
+                      fontWeight: FontWeight.normal),
+                      SizedBox(height: 10,),
+                      CustomTextWidget(
+                      text: "kennedymutugi111@gmail.com",
+                      size: 14,
+                      color: Colors.black12,
+                      fontWeight: FontWeight.w100)
+                ],
+              ),
             ),
           ),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade400,
+                color: Colors.grey.shade200,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50),
                   topRight: Radius.circular(50),

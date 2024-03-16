@@ -11,14 +11,14 @@ import 'package:virtual_assistance_2/widgets/custom_button.dart';
 import 'package:virtual_assistance_2/widgets/custom_textwidget.dart';
 import 'package:virtual_assistance_2/widgets/myform_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignupScreen extends StatelessWidget {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController usernamecontroller = TextEditingController();
 
   bool _obsecureText = true;
 
-  LoginScreen({super.key});
+  SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -123,37 +123,37 @@ class LoginScreen extends StatelessWidget {
                         : Icons.visibility)),
                 prefixIcon: Icon(Icons.password),
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomTextWidget(
-                      text: "Forgot your",
-                      size: 17,
-                      color: Pallete.blackColor,
-                      fontWeight: FontWeight.bold),
-                  TextButton(
-                    onPressed: () {
-                      Get.to(ResetPassword());
-                    },
-                    child: Text("Username?"),
-                  ),
-                  CustomTextWidget(
-                      text: "/",
-                      size: 17,
-                      color: Pallete.mainFontColor,
-                      fontWeight: FontWeight.bold),
-                  TextButton(
-                    onPressed: () {
-                      Get.to(ResetPassword());
-                    },
-                    child: Text("Password?"),
-                  ),
-                ],
-              ),
+              // SizedBox(
+              //   height: 5,
+              // ),
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     CustomTextWidget(
+              //         text: "Forgot your",
+              //         size: 17,
+              //         color: Pallete.blackColor,
+              //         fontWeight: FontWeight.bold),
+              //     TextButton(
+              //       onPressed: () {
+              //         Get.to(ResetPassword());
+              //       },
+              //       child: Text("Username?"),
+              //     ),
+              //     CustomTextWidget(
+              //         text: "/",
+              //         size: 17,
+              //         color: Pallete.mainFontColor,
+              //         fontWeight: FontWeight.bold),
+              //     TextButton(
+              //       onPressed: () {
+              //         Get.to(ResetPassword());
+              //       },
+              //       child: Text("Password?"),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 30,
               ),
@@ -166,7 +166,7 @@ class LoginScreen extends StatelessWidget {
 
               //custom button
               CustomButton(
-                text: "Login",
+                text: "Signup",
                 ontap: () {
                   //AuthController.instance.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
                 },
