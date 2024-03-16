@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
+import 'package:virtual_assistance_2/Screens/otherScreens/account_screem.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
            backgroundColor: Pallete.whiteColor 
           )
         ),
-      home: LoginScreen()
+      home: AccountScreen()
     );
   }
 }

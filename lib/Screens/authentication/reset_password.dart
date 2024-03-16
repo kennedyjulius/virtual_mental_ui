@@ -62,7 +62,7 @@ class ResetPassword extends StatelessWidget {
              
               MyformField(
                 //labelText: "email",
-                hintText: "email address",
+                hintText: "email address / username ",
                 controller: emailcontroller,
                 obscureText: false,
                 suffixIcon: IconButton(
