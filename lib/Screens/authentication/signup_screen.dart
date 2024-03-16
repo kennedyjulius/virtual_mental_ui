@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-
 import 'package:virtual_assistance_2/Screens/authentication/reset_password.dart';
 import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
@@ -15,6 +14,7 @@ import 'package:virtual_assistance_2/widgets/myform_field.dart';
 class LoginScreen extends StatelessWidget {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController usernamecontroller = TextEditingController();
 
   bool _obsecureText = true;
 
@@ -24,15 +24,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-          
-        }, icon: Icon(Icons.menu)),
-
-        actions: [
-          TextButton(onPressed: () {
-            
-          }, child: Text("Register ..."))
-        ],
+        leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
+        actions: [TextButton(onPressed: () {}, child: Text("Login ..."))],
       ),
       backgroundColor: Pallete.whiteColor,
       resizeToAvoidBottomInset: true,
@@ -42,13 +35,15 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10,),
-                            Container(
-                              height: 250,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(image: AssetImage("assets/virtualAssistant.png"))
-                                            ),
-                                          ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/virtualAssistant.png"))),
+              ),
               // CustomTextWidget(
               //     text: "We missed you ",
               //     size: 22,
@@ -81,7 +76,22 @@ class LoginScreen extends StatelessWidget {
               //   height: 10,
               // ),
 
-             
+              MyformField(
+                //labelText: "email",
+                hintText: "Username",
+                controller: emailcontroller,
+                obscureText: false,
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      usernamecontroller.clear();
+                    },
+                    icon: Icon(Icons.clear)),
+                prefixIcon: Icon(Icons.person),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+
               MyformField(
                 //labelText: "email",
                 hintText: "email address",
@@ -120,22 +130,22 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                        CustomTextWidget(
-                        text: "Forgot your",
-                        size: 17,
-                        color: Pallete.blackColor,
-                        fontWeight: FontWeight.bold),
+                  CustomTextWidget(
+                      text: "Forgot your",
+                      size: 17,
+                      color: Pallete.blackColor,
+                      fontWeight: FontWeight.bold),
                   TextButton(
                     onPressed: () {
                       Get.to(ResetPassword());
                     },
                     child: Text("Username?"),
                   ),
-                        CustomTextWidget(
-                        text: "/",
-                        size: 17,
-                        color: Pallete.mainFontColor,
-                        fontWeight: FontWeight.bold),
+                  CustomTextWidget(
+                      text: "/",
+                      size: 17,
+                      color: Pallete.mainFontColor,
+                      fontWeight: FontWeight.bold),
                   TextButton(
                     onPressed: () {
                       Get.to(ResetPassword());
@@ -144,7 +154,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-               SizedBox(
+              SizedBox(
                 height: 30,
               ),
 
@@ -157,11 +167,11 @@ class LoginScreen extends StatelessWidget {
               //custom button
               CustomButton(
                 text: "Login",
-                ontap: (){
-                //AuthController.instance.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
-              },
+                ontap: () {
+                  //AuthController.instance.login(emailcontroller.text.trim(), passwordcontroller.text.trim());
+                },
               ),
-             
+
               // Row(
               //   children: [
               //     CustomTextWidget(
