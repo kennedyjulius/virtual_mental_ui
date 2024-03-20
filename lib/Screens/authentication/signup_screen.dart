@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:virtual_assistance_2/Screens/authentication/reset_password.dart';
@@ -30,11 +31,13 @@ class SignupScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //SizedBox(height: 10),
-                Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/chatgpt.png"),
+                ZoomIn(
+                  child: Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/chatbot.png"),
+                      ),
                     ),
                   ),
                 ),

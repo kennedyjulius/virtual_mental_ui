@@ -14,7 +14,7 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("Kennedy Mutugi Julius"), 
+            accountName: Text("Kennedy Mutugi Julius"),
             accountEmail: Text("kennedymutugi@111"),
             currentAccountPicture: CircleAvatar(
               backgroundImage: AssetImage("assets/chatperson.png"),
@@ -27,13 +27,13 @@ class NavBar extends StatelessWidget {
               ),
             ),
           ),
-
           ListTile(
             leading: Icon(Icons.share),
             title: Text("Share"),
-            onTap: () => print("Share Tapped"),
+            onTap: () {
+              Get.snackbar("Alert Message", "Share to others Comming Soon");
+            },
           ),
-
           ListTile(
             leading: Icon(Icons.person),
             title: Text("Personal Details"),
@@ -41,9 +41,7 @@ class NavBar extends StatelessWidget {
               Get.to(AccountScreen());
             },
           ),
-
           Divider(),
-
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Log Out"),
