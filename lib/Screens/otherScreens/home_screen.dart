@@ -1,7 +1,5 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
 import 'package:virtual_assistance_2/widgets/feature_box.dart';
 import 'package:virtual_assistance_2/widgets/navbar.dart';
@@ -14,49 +12,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final SpeechToText speechToText;
-  late String lastWords;
   TextEditingController _controller = TextEditingController();
+  TextEditingController _bottomTextFieldController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    initSpeechToText();
-  }
+  // List of topics
+  List<String> topics = [
+    "You are Stronger than You Think",
+    "Embrace Progress, Not Perfection",
+    "Your Mental Health Matters",
+    // Add more topics as needed
+  ];
 
-  Future<void> initSpeechToText() async {
-    speechToText = SpeechToText();
-    await speechToText.initialize();
-  }
-
-  /// Each time to start a speech recognition session
-  Future<void> startListening() async {
-    await speechToText.listen(onResult: _onSpeechResult);
-    setState(() {});
-  }
-
-  /// Manually stop the active speech recognition session
-  /// Note that there are also timeouts that each platform enforces
-  /// and the SpeechToText plugin supports setting timeouts on the
-  /// listen method.
-  Future<void> stopListening() async {
-    await speechToText.stop();
-    setState(() {});
-  }
-
-  /// This is the callback that the SpeechToText plugin calls when
-  /// the platform returns recognized words.
-  void _onSpeechResult(SpeechRecognitionResult result) {
-    setState(() {
-      lastWords = result.recognizedWords;
-    });
-  }
-
-  @override
-  void dispose() {
-    speechToText.stop();
-    super.dispose();
-  }
+  // Selected topic
+  String? selectedTopic;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
             title: BounceInDown(child: const Text("Allen the ChatBot")),
             centerTitle: true,
             pinned: true,
-            // This will make the app bar stay at the top even when scrolling down
           ),
           SliverList(
             delegate: SliverChildListDelegate(
@@ -126,7 +93,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                //suggestion list
+                // Filter Chips
+                const SizedBox(height: 10),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: topics
+                        .map(
+                          (topic) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: FilterChip(
+                              label: Text(topic),
+                              selected: selectedTopic == topic,
+                              onSelected: (selected) {
+                                setState(() {
+                                  selectedTopic = selected ? topic : null;
+                                });
+                                if (selected) {
+                                  // Forward the selected topic to the backend
+                                  _sendTopicToBackend(topic);
+                                }
+                              },
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                // Suggestion Boxes
                 SlideInRight(
                   delay: Duration(milliseconds: 400),
                   child: FeatureBox(
@@ -137,9 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
 
                 SlideInLeft(
                   delay: Durations.medium1,
@@ -151,9 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
 
                 SlideInRight(
                   delay: Durations.medium2,
@@ -165,74 +158,49 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        height: _controller.text.isEmpty ? 60 : 0,
-        child: BottomAppBar(
-          child: Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        gapPadding: 8,
-                        borderSide: BorderSide(
-                          color: Colors.amber,
-                        ),
-                      ),
-                      hintText: 'Enter your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.green,
-                          width: 1.0,
-                        ),
-                      ),
-                      fillColor: Colors.grey,
-                      enabled: true,
-                      prefixIcon: const Icon(Icons.emoji_emotions),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Add your send message logic here
-                  },
-                  icon: const Icon(Icons.send),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Pallete.firstSuggestionBoxColor,
         onPressed: () async {
-          if (await speechToText.hasPermission &&
-              speechToText.isNotListening) {
-            await startListening();
-          } else if (speechToText.isListening) {
-            await stopListening();
-          } else {
-            initSpeechToText();
-          }
+          // Add your logic for speech to text here
         },
         child: const Icon(Icons.mic),
       ),
+      bottomNavigationBar: Container(
+        color: Pallete.firstSuggestionBoxColor,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _bottomTextFieldController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your message...',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                // Add your send message logic here
+                print('Send Button Pressed');
+              },
+              icon: const Icon(Icons.send),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  // Function to send the selected topic to the backend
+  void _sendTopicToBackend(String topic) {
+    // Add your logic to send the selected topic to the backend here
+    print('Selected topic: $topic');
   }
 }

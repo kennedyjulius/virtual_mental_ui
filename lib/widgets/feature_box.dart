@@ -7,7 +7,7 @@ class FeatureBox extends StatelessWidget {
   final Color color;
   final String headerText;
   final String descriptionText;
-  const FeatureBox({super.key, required this.color, required this.headerText, required this.descriptionText});
+  const FeatureBox({super.key, required this.color, required this.headerText, required this.descriptionText, required Null Function() onTap});
 
   @override
   Widget build(BuildContext context) {
