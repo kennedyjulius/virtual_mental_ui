@@ -12,11 +12,11 @@ class RegisterUser{
   });
 
   Map<String, dynamic> toJson(){
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email']=this.email;
-    data['username']=this.name;
-    data['password']=this.password;
-    data['password2']=this.passwordConfirm;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['email']=email;
+    data['username']=name;
+    data['password']=password;
+    data['password2']=passwordConfirm;
     return data;
   }
 }

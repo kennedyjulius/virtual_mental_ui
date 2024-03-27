@@ -1,20 +1,25 @@
+// import 'dart:html';
+
+// import 'dart:js_interop';
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
 import 'package:virtual_assistance_2/model/login_model.dart';
 import 'package:virtual_assistance_2/model/registration_model.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
 import 'package:virtual_assistance_2/utils/app_constants.dart';
+
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:online_order_app/utils/app_constants.dart';
+
 
 import '../utils/show_custom_snackbar.dart';
 
 class AuthController  extends GetxController implements GetxService{
-  AuthRepo authRepo= AuthRepo(apiClient: Get.find(), appBaseUrl: AppConstants.BASE_URL);
+  AuthRepo authRepo= AuthRepo(apiClient: Get.find(),  appBaseUrl: AppConstants.BASE_URL);
    
   bool _isLoading = false;
   bool get isloading => _isLoading;
