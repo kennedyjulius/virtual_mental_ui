@@ -1,19 +1,23 @@
-import 'package:animate_do/animate_do.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:virtual_assistance_2/Screens/authentication/reset_password.dart';
+import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
+import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
+import 'package:virtual_assistance_2/model/user_model.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
+import 'package:virtual_assistance_2/utils/show_custom_snackbar.dart';
 import 'package:virtual_assistance_2/widgets/custom_button.dart';
 import 'package:virtual_assistance_2/widgets/custom_textwidget.dart';
 import 'package:virtual_assistance_2/widgets/myform_field.dart';
 import 'package:virtual_assistance_2/widgets/socials_buttons.dart';
 
 class SignupScreen extends StatelessWidget {
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
-  TextEditingController usernamecontroller = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  bool _obsecureText = true;
+  bool obscureText = true;
 
   SignupScreen({Key? key}) : super(key: key);
 
@@ -25,22 +29,12 @@ class SignupScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //SizedBox(height: 10),
-                ZoomIn(
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/chatbot.png"),
-                      ),
-                    ),
-                  ),
-                ),
+                SizedBox(height: 20),
                 CustomTextWidget(
                   text: "Let's Register ",
                   size: 22,
@@ -73,10 +67,10 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 MyformField(
                   hintText: "Name",
-                  controller: usernamecontroller,
+                  controller: usernameController,
                   obscureText: false,
                   suffixIcon: IconButton(
-                    onPressed: () => usernamecontroller.clear(),
+                    onPressed: () => usernameController.clear(),
                     icon: Icon(Icons.clear),
                   ),
                   prefixIcon: Icon(Icons.person),
@@ -84,10 +78,10 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 MyformField(
                   hintText: "Email",
-                  controller: emailcontroller,
+                  controller: emailController,
                   obscureText: false,
                   suffixIcon: IconButton(
-                    onPressed: () => emailcontroller.clear(),
+                    onPressed: () => emailController.clear(),
                     icon: Icon(Icons.clear),
                   ),
                   prefixIcon: Icon(Icons.email),
@@ -95,27 +89,36 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 MyformField(
                   hintText: "Password",
-                  controller: passwordcontroller,
-                  obscureText: _obsecureText,
+                  controller: passwordController,
+                  obscureText: obscureText,
                   suffixIcon: IconButton(
                     onPressed: () {
-                      _obsecureText = !_obsecureText;
-                      // Force rebuild to update the obscureText
-                      //Get.forceAppUpdate();
+                      obscureText = !obscureText;
                     },
                     icon: Icon(
-                      _obsecureText
-                          ? Icons.visibility_off
-                          : Icons.visibility,
+                      obscureText ? Icons.visibility_off : Icons.visibility,
                     ),
                   ),
-                  prefixIcon: Icon(Icons.password),
+                  prefixIcon: Icon(Icons.lock),
                 ),
                 SizedBox(height: 30),
                 CustomButton(
                   text: "Signup",
-                  ontap: () {
-                    // Perform signup action
+                  ontap: () async {
+                    String username = usernameController.text.trim();
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
+
+                    if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
+                      UserModel? user = await AuthController.to.registration(username, email, password, password);
+                      if (user != null) {
+                        // Navigate to the home screen or any other screen
+                         Get.to(HomeScreen());
+                      }
+                    } else {
+                      showCustomSnackBar("Please fill all fields",
+                          title: "Error", backgroundColor: Colors.red);
+                    }
                   },
                 ),
                 SizedBox(height: 20),

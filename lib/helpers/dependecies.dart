@@ -1,23 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
+import 'package:virtual_assistance_2/data/api/api_client.dart';
+import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
+import 'package:virtual_assistance_2/main.dart';
+import 'package:virtual_assistance_2/utils/app_constants.dart';
 
-// Future<void> init() async {
-//   //final sharedPreferences = await SharedPreferences.getInstance();
+void main() {
+  init();
+  runApp(MyApp());
+}
 
-//   // Get.lazyPut(() => sharedPreferences);
-//   // API client
-//   Get.lazyPut(() => Apiclient(
-//         appBaseUrl: AppConstants.BASE_URL,
-//         token: '',
-//       ));
-
-//   // Repositories
-//   Get.lazyPut(() => PopularProductRepo(apiclient: Get.find()));
-//   Get.lazyPut(() => RecommendedProductRepo(apiclient: Get.find()));
-//   Get.lazyPut(() => CartRepo(sharedPreferences:Get.find()));
-
-//   //Controllers
-//   Get.lazyPut(() => PopularProductController(
-//       popularProductRepo: Get.find<PopularProductRepo>()));
-//   Get.lazyPut(
-//       () => RecommendedProductController(recommendedProductRepo: Get.find()));
-//   Get.lazyPut(() => CartController(cartRepo: Get.find()));
-// }
+void init() {
+  Get.lazyPut(() => ApiClient(appBaseUrl: 'your_base_url_here'));
+  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), appBaseUrl: AppConstants.BASE_URL));
+  Get.lazyPut(() => AuthController());
+}

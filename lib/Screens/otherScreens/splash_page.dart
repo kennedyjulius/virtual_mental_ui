@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen>
           ScaleTransition(
             scale: animation,
             child: Center(
-              child: Text("Welcome To Chatbot", style: TextStyle(color: Colors.amber, fontSize: 26),)
+              child: Text("Welcome To Virtual Health Assistant", style: TextStyle(color: Colors.amber, fontSize: 26),)
             ),
           )
         ],
