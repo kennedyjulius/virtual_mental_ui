@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
+import 'package:virtual_assistance_2/model/login_model.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
+import 'package:virtual_assistance_2/utils/app_constants.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
 import 'package:virtual_assistance_2/utils/show_custom_snackbar.dart';
 import 'package:virtual_assistance_2/widgets/custom_button.dart';
@@ -14,12 +16,41 @@ import 'package:virtual_assistance_2/widgets/myform_field.dart';
 import 'reset_password.dart'; // Import ResetPassword screen
 
 class LoginScreen extends StatelessWidget {
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
+  // TextEditingController emailcontroller = TextEditingController();
+  // TextEditingController passwordcontroller = TextEditingController();
 
   bool _obscureText = true;
 
   LoginScreen({Key? key}) : super(key: key);
+
+   // AuthController authController=Get.find();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  Future<UserModel?> _login() async {
+    var authController = Get.find<AuthController>();
+
+    String username = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (username.isEmpty) {
+      showCustomSnackBar("Enter email", title: "Email");
+    } else if (!GetUtils.isEmail(username)) {
+      showCustomSnackBar("Enter valid email", title: "Email");
+    } else if (password.isEmpty) {
+      showCustomSnackBar("Enter password", title: "Pasword");
+    } else {
+      UserLogin userLogin = UserLogin(username: username, password: password);
+      var userModel = await authController.login(userLogin);
+      print(userModel);
+
+      return userModel; // var userModel =await
+    }
+    return null;
+    // return null;
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +82,10 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 MyformField(
                   hintText: "Email",
-                  controller: emailcontroller,
+                  controller: emailController,
                   obscureText: false,
                   suffixIcon: IconButton(
-                    onPressed: () => emailcontroller.clear(),
+                    onPressed: () => emailController.clear(),
                     icon: Icon(Icons.clear),
                   ),
                   prefixIcon: Icon(Icons.email),
@@ -62,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 MyformField(
                   hintText: "Password",
-                  controller: passwordcontroller,
+                  controller: passwordController,
                   obscureText: _obscureText,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -78,18 +109,14 @@ class LoginScreen extends StatelessWidget {
                 CustomButton(
                   text: "Login",
                   ontap: () async {
-                    String email = emailcontroller.text.trim();
-                    String password = passwordcontroller.text.trim();
-                    if (email.isNotEmpty && password.isNotEmpty) {
-                      UserModel? user = await AuthController.to.login(email, password);
-                      if (user != null) {
-                        //Navigate to the home screen or any other screen
-                        Get.to(const HomeScreen());
-                      }
-                    } else {
-                      showCustomSnackBar("Please enter email and password",
-                          title: "Error", backgroundColor: Colors.red);
-                    }
+                     var user = await _login();
+                  if (user != null) {
+                    Get.to(HomeScreen());
+                    print("This is " + AppConstants.TOKEN);
+                  } else {
+                    showCustomSnackBar("invalid credentials");
+                    return;
+                  }
                   },
                 ),
                 SizedBox(height: 20),

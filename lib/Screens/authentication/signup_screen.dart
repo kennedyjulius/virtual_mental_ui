@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
+import 'package:virtual_assistance_2/model/registration_model.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
 import 'package:virtual_assistance_2/utils/show_custom_snackbar.dart';
@@ -13,13 +14,56 @@ import 'package:virtual_assistance_2/widgets/myform_field.dart';
 import 'package:virtual_assistance_2/widgets/socials_buttons.dart';
 
 class SignupScreen extends StatelessWidget {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  // TextEditingController usernameController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
 
   bool obscureText = true;
 
   SignupScreen({Key? key}) : super(key: key);
+
+  var emailController = TextEditingController();
+  var usernameController = TextEditingController();
+  var passwordController = TextEditingController();
+  var confirmPasswordController = TextEditingController();
+
+  Future<UserModel?> _registration() async {
+    var authController = Get.find<AuthController>();
+
+    String email = emailController.text.trim();
+    String name = usernameController.text.trim();
+    String password = passwordController.text.trim();
+    String passwordConfirm = confirmPasswordController.text.trim();
+
+    if (email.isEmpty) {
+      showCustomSnackBar("Enter Email", title: "Email");
+    } else if (!GetUtils.isEmail(email)) {
+      showCustomSnackBar("Enter a valid Email", title: "Email");
+    } else if (name.isEmpty) {
+      showCustomSnackBar("Type in your name", title: "Name");
+    } else if (password.isEmpty) {
+      showCustomSnackBar("Type in password", title: "Password");
+    } else if (password != passwordConfirm) {
+      showCustomSnackBar("password didn't match", title: "Password");
+    } else if (password.length < 6) {
+      showCustomSnackBar("password should't be less than 6 characters",
+          title: "Password");
+    } else {
+      // showCustomSnackBar("Valid credentials", title: "Password");
+
+      RegisterUser registerUser = RegisterUser(
+          email: email,
+          name: name,
+          password: password,
+          passwordConfirm: passwordConfirm);
+      // print(registerUser.toString());
+      var userModel = await authController.registration(registerUser);
+      print(userModel);
+      //  return   await authController.registration(registerUser);
+      return userModel;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,26 +145,32 @@ class SignupScreen extends StatelessWidget {
                   ),
                   prefixIcon: Icon(Icons.lock),
                 ),
+                SizedBox(height: 10,),
+                 MyformField(
+                  hintText: "Confirm Password",
+                  controller: confirmPasswordController,
+                  obscureText: obscureText,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      obscureText = !obscureText;
+                    },
+                    icon: Icon(
+                      obscureText ? Icons.visibility_off : Icons.visibility,
+                    ),
+                  ),
+                  prefixIcon: Icon(Icons.lock),
+                ),
                 SizedBox(height: 30),
                 CustomButton(
                   text: "Signup",
                   ontap: () async {
-                    String username = usernameController.text.trim();
-                    String email = emailController.text.trim();
-                    String password = passwordController.text.trim();
-
-                    if (username.isNotEmpty &&
-                        email.isNotEmpty &&
-                        password.isNotEmpty) {
-                      UserModel? user = await AuthController.to
-                          .registration(username, email, password, password);
-                      if (user != null) {
-                        showCustomSnackBar("Registered successfull", title: "Success, ", backgroundColor: Colors.green);
-                        Get.to(HomeScreen());
-                      }
+                    var user = await _registration();
+                    if (user != null) {
+                      Get.to(HomeScreen());
+                      showCustomSnackBar("Registration Successfull",
+                          backgroundColor: Colors.green, title: "success");
                     } else {
-                      showCustomSnackBar("Please fill all fields",
-                          title: "Error", backgroundColor: Colors.red);
+                      showCustomSnackBar("Email or Username already taken");
                     }
                   },
                 ),

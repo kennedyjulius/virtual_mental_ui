@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:online_order_app/data/api/repository/auth_repo.dart';
-import 'package:online_order_app/models/user_models.dart';
-import 'package:online_order_app/utils/app_constants.dart';
+
+import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
+import 'package:virtual_assistance_2/model/user_model.dart';
 import 'package:virtual_assistance_2/utils/app_constants.dart';
 
 // import 'package:http/http.dart' as http;
@@ -20,7 +20,7 @@ class ApiClient<T> extends GetConnect implements GetxService{
     timeout =  Duration(minutes: 3);
     token=AppConstants.TOKEN;
    
-    authRepo=AuthRepo(apiClient: this);
+    authRepo=AuthRepo(apiClient: this, appBaseUrl: AppConstants.BASE_URL);
 
     httpClient.addRequestModifier<dynamic>((request) async{
             // // print("wewe");
@@ -55,7 +55,7 @@ class ApiClient<T> extends GetConnect implements GetxService{
     httpClient.addResponseModifier((request, res) async{
 
       if(res.statusCode==HttpStatus.unauthorized){
-        print("ca;led");
+        print("called");
             var gUser=await authRepo.getUser();
             // print("guser ${gUser!.payload}");
             var response= await httpClient.get(AppConstants.TOKENREFRESH,query: {"refresh_token":gUser?.payload.token.refreshToken});
