@@ -109,11 +109,14 @@ class SignupScreen extends StatelessWidget {
                     String email = emailController.text.trim();
                     String password = passwordController.text.trim();
 
-                    if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-                      UserModel? user = await AuthController.to.registration(username, email, password, password);
+                    if (username.isNotEmpty &&
+                        email.isNotEmpty &&
+                        password.isNotEmpty) {
+                      UserModel? user = await AuthController.to
+                          .registration(username, email, password, password);
                       if (user != null) {
-                        // Navigate to the home screen or any other screen
-                         Get.to(HomeScreen());
+                        showCustomSnackBar("Registered successfull", title: "Success, ", backgroundColor: Colors.green);
+                        Get.to(HomeScreen());
                       }
                     } else {
                       showCustomSnackBar("Please fill all fields",
@@ -129,7 +132,12 @@ class SignupScreen extends StatelessWidget {
                       Expanded(child: Divider(color: Colors.grey)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text("OR", style: TextStyle(color: Pallete.secondSuggestionBoxColor, fontWeight: FontWeight.w200),),
+                        child: Text(
+                          "OR",
+                          style: TextStyle(
+                              color: Pallete.secondSuggestionBoxColor,
+                              fontWeight: FontWeight.w200),
+                        ),
                       ),
                       Expanded(child: Divider(color: Colors.grey)),
                     ],

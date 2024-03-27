@@ -12,7 +12,7 @@ void main() {
 }
 
 void init() {
-  Get.lazyPut(() => ApiClient(appBaseUrl: 'your_base_url_here'));
+  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL));
   Get.lazyPut(() => AuthRepo(apiClient: Get.find(), appBaseUrl: AppConstants.BASE_URL));
   Get.lazyPut(() => AuthController());
 }

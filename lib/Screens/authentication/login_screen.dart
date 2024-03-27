@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
@@ -81,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                       UserModel? user = await AuthController.to.login(email, password);
                       if (user != null) {
                         //Navigate to the home screen or any other screen
-                        Get.to(HomeScreen());
+                        Get.to(const HomeScreen());
                       }
                     } else {
                       showCustomSnackBar("Please enter email and password",
@@ -99,6 +102,23 @@ class LoginScreen extends StatelessWidget {
                     "Forgot password?",
                     style: TextStyle(color: Colors.black),
                   ),
+                ),
+                SizedBox(height: 10), // Add some spacing
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Don't have an account yet? "),
+                    TextButton(
+                      onPressed: () {
+                        // Navigate to the signup screen
+                        Get.to(() => SignupScreen());
+                      },
+                      child: Text(
+                        "Register here",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

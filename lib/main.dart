@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
@@ -5,10 +7,7 @@ import 'package:virtual_assistance_2/data/api/api_client.dart';
 import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
 import 'package:virtual_assistance_2/utils/app_constants.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
-import 'package:virtual_assistance_2/widgets/custom_button.dart';
-import 'package:virtual_assistance_2/widgets/custom_textwidget.dart';
-import 'package:virtual_assistance_2/widgets/myform_field.dart';
-import 'package:virtual_assistance_2/widgets/socials_buttons.dart';
+
 
 import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
 import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
@@ -43,10 +42,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => SplashScreen()),
+        GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(name: '/login', page: () => LoginScreen()),
         GetPage(name: '/signup', page: () => SignupScreen()),
-        GetPage(name: '/home', page: () => HomeScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
       ],
     );
   }
