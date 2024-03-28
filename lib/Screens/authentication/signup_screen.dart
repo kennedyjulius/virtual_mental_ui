@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
-import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
-import 'package:virtual_assistance_2/model/registration_model.dart';
-import 'package:virtual_assistance_2/model/user_model.dart';
+import 'package:virtual_assistance_2/controllers/auth_controller_firebase.dart';
+
 import 'package:virtual_assistance_2/utils/colors.dart';
 import 'package:virtual_assistance_2/utils/show_custom_snackbar.dart';
 import 'package:virtual_assistance_2/widgets/custom_button.dart';
@@ -19,49 +18,16 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  var emailController = TextEditingController();
-  var usernameController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
+  final TextEditingController usernameController= TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpasswordController = TextEditingController();
+
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    bool obscurePassword = true;
-    bool obscureConfirmPassword = true;
-
-    Future<UserModel> _registration() async {
-      var authController = Get.find<AuthController>();
-
-      String email = emailController.text.trim();
-      String name = usernameController.text.trim();
-      String password = passwordController.text.trim();
-      String passwordConfirm = confirmPasswordController.text.trim();
-
-      if (email.isEmpty) {
-        showCustomSnackBar("Enter Email", title: "Email");
-      } else if (!GetUtils.isEmail(email)) {
-        showCustomSnackBar("Enter a valid Email", title: "Email");
-      } else if (name.isEmpty) {
-        showCustomSnackBar("Type in your name", title: "Name");
-      } else if (password.isEmpty) {
-        showCustomSnackBar("Type in password", title: "Password");
-      } else if (password != passwordConfirm) {
-        showCustomSnackBar("password didn't match", title: "Password");
-      } else if (password.length < 6) {
-        showCustomSnackBar("password should't be less than 6 characters",
-            title: "Password");
-      } else {
-        RegisterUser registerUser = RegisterUser(
-          email: email,
-          name: name,
-          password: password,
-          passwordConfirm: passwordConfirm,
-        );
-        var userModel = await authController.registration(registerUser);
-        print(userModel);
-      }
-      return UserModel.empty();
-    }
+    
 
     return Scaffold(
       backgroundColor: Pallete.whiteColor,
@@ -130,14 +96,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 MyformField(
                   hintText: "Password",
                   controller: passwordController,
-                  obscureText: obscurePassword,
+                  obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     onPressed: () {
-                      obscurePassword = !obscurePassword;
+                      _obscurePassword = !_obscurePassword;
                     },
                     icon: Icon(
                       // ignore: dead_code
-                      obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
                     ),
                   ),
                   prefixIcon: const Icon(Icons.lock),
@@ -147,14 +113,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 MyformField(
                   hintText: "Confirm Password",
-                  controller: confirmPasswordController,
-                  obscureText: obscureConfirmPassword,
+                  controller: confirmpasswordController,
+                  obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     onPressed: () {
-                      obscureConfirmPassword = !obscureConfirmPassword;
+                      _obscurePassword = !_obscurePassword;
                     },
                     icon: Icon(
-                      obscureConfirmPassword
+                      _obscurePassword
                           ? Icons.visibility_off
                           : Icons.visibility,
                     ),
@@ -165,14 +131,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 CustomButton(
                   text: "Signup",
                   ontap: () async {
-                    var user = await _registration();
-                    if (user != null) {
-                      Get.to(const HomeScreen());
-                      showCustomSnackBar("Registration Successfull",
-                          backgroundColor: Colors.green, title: "success");
-                    } else {
-                      showCustomSnackBar("Email or Username already taken");
-                    }
+                    AuthController.instance.register(
+                    usernameController.text.trim(),
+                    emailController.text.trim(),
+                    passwordController.text.trim());
                   },
                 ),
                 const SizedBox(height: 20),

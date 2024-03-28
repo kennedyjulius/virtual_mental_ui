@@ -1,6 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
 
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 
@@ -147,7 +151,7 @@ class AuthController extends GetxController {
 
       await Future.delayed(const Duration(seconds: 1));
 
-      Get.off( DashboardScreen());
+      Get.off( HomeScreen());
     } catch (e) {
       EasyLoading.dismiss();
       Get.snackbar(
