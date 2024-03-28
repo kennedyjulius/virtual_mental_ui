@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 
 import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
@@ -18,16 +20,16 @@ class ApiClient<T> extends GetConnect implements GetxService{
     timeout =  Duration(minutes: 3);
     token=AppConstants.TOKEN;
    
-    authRepo=AuthRepo(apiClient: this,  appBaseUrl: AppConstants.BASE_URL);
+    authRepo=AuthRepo(apiClient: this, appBaseUrl: AppConstants.BASE_URL);
 
     httpClient.addRequestModifier<dynamic>((request) async{
             // // print("wewe");
             // print(request.bodyBytes);
             // print("ffff");
 
-       var noAuth=request.url.path.contains("/api/account/log") 
-       || request.url.path.contains("/api/account/register") 
-       ||request.url.path.contains("/api/account/refresh") ;
+      //  var noAuth=request.url.path.contains("/api/account/log") 
+      //  || request.url.path.contains("/api/account/register") 
+      //  ||request.url.path.contains("/api/account/refresh") ;
        
        
       // print("${request.url.path.contains("/api/account/log")}");
@@ -39,7 +41,7 @@ class ApiClient<T> extends GetConnect implements GetxService{
       }
       // print(gUser?.toJson());
       //request.headers["Content-type"]= 'application/json; charset=UTF-8';
-      if(gUser!=null && !noAuth){
+      if(gUser!=null){
         // print(("Add Auth Headers"));
         request.headers["Authorization"]='Bearer ${gUser.payload.token.accessToken}';
       //   Get.toNamed(RouteHelper.homeScreen);

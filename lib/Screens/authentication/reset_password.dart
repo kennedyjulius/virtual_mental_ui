@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:virtual_assistance_2/controllers/auth_controller_firebase.dart';
 import 'package:virtual_assistance_2/utils/colors.dart';
 import 'package:virtual_assistance_2/widgets/custom_button.dart';
 import 'package:virtual_assistance_2/widgets/custom_textwidget.dart';
@@ -80,7 +81,7 @@ class ResetPassword extends StatelessWidget {
               CustomButton(
                 text: "Reset Password",
                 ontap: (){
-                //AuthController.instance.resetPassword(emailcontroller.text.trim());
+                AuthController.instance.resetPassword(emailcontroller.text.trim());
               },
               ),
               SizedBox(

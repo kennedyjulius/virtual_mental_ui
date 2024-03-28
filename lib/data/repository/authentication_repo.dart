@@ -1,23 +1,25 @@
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
-import 'package:virtual_assistance_2/data/api/api_client.dart';
+import 'package:virtual_assistance_2/data/apis/api_client.dart';
 import 'package:virtual_assistance_2/model/login_model.dart';
 import 'package:virtual_assistance_2/model/registration_model.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
 import 'package:virtual_assistance_2/utils/app_constants.dart';
 
-class AuthRepo {
+
+class AuthRepo{
   final ApiClient apiClient;
   AuthRepo({
-    required this.apiClient,required String appBaseUrl,
+    required this.apiClient, required String appBaseUrl,
   });
 
   Future<Response> registration(RegisterUser registerUser) async {
-    return await apiClient.postData(
-        AppConstants.REGISTRATION_URI, registerUser.toJson());
+    return await apiClient.postData(AppConstants.REGISTRATION_URI, registerUser.toJson());
   }
 
   Future<Response> login(UserLogin userLogin) async {
@@ -26,49 +28,50 @@ class AuthRepo {
     var user= await apiClient.postData(AppConstants.LOGIN_URI, userLogin.toJson());
     return user;
   }
-  Future<bool>saveUserToken(String token) async {
-    apiClient.token = token;
-    apiClient.updateHeader(token);
+  // Future<bool>saveUserToken(String token) async {
+  //   apiClient.token = token;
+  //   apiClient.updateHeader(token);
+  //   SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
+  //   // print(AppConstants.TOKEN);
+  //   return  sharedPreferences.setString(AppConstants.TOKEN, token); 
+
+  // }
+    Future<bool>saveUser(String user) async {
+   
     SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
     // print(AppConstants.TOKEN);
-    return  sharedPreferences.setString(AppConstants.TOKEN, token);
+    return  sharedPreferences.setString('user', user); 
 
   }
-  Future<bool> saveUser(String user) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Future<bool>saveUserModel(UserModel user) async {
+   
+    SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
     // print(AppConstants.TOKEN);
-    return sharedPreferences.setString('user', user);
-  }
+    return  sharedPreferences.setString('user', jsonEncode(user.toJson())); 
 
-  Future<bool> saveUserModel(UserModel user) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // print(AppConstants.TOKEN);
-    return sharedPreferences.setString('user', jsonEncode(user.toJson()));
   }
-
-  Future<UserModel?> getUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var stringUser = sharedPreferences.getString('user');
+  Future<UserModel?> getUser() async{
+        SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
+    var stringUser=  sharedPreferences.getString('user'); 
     // print(stringUser);
-    if (stringUser == null) {
-      Get.to(LoginScreen());
-      print("user is null, printing from auth repo");
-      return null;
-    }
-    return UserModel.fromJson(jsonDecode(stringUser));
+           if(stringUser==null){
+            Get.to(LoginScreen());
+            print("user is null, printing from auth repo");
+            return null;
+           }
+     return UserModel.fromJson(jsonDecode(stringUser));
   }
-
-  static Future<UserModel?> getUserInstance() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var stringUser = sharedPreferences.getString('user');
-    if (stringUser == null) {
-      return null;
-    }
-    return UserModel.fromJson(jsonDecode(stringUser));
+  static Future<UserModel?> getUserInstance() async{
+        SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
+    var stringUser=  sharedPreferences.getString('user'); 
+ if(stringUser==null){
+            return null;
+           }
+     return UserModel.fromJson(jsonDecode(stringUser));
   }
+  static Future<bool?> deleteUserInstance() async{
+        SharedPreferences sharedPreferences= await SharedPreferences.getInstance();
+    return sharedPreferences.remove('user'); 
 
-  static Future<bool?> deleteUserInstance() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.remove('user');
   }
 }

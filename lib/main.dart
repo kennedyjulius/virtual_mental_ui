@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:virtual_assistance_2/Screens/otherScreens/splash_page.dart';
+import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
+
+import 'package:virtual_assistance_2/data/apis/api_client.dart';
 import 'package:virtual_assistance_2/data/repository/authentication_repo.dart';
-import 'package:virtual_assistance_2/model/user_model.dart';
-import "package:virtual_assistance_2/helpers/dependecies.dart" as dep;
+import 'package:virtual_assistance_2/utils/app_constants.dart';
+
+
+import 'package:virtual_assistance_2/utils/colors.dart';
+
+import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
+import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
+import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
+import 'package:virtual_assistance_2/Screens/otherScreens/splash_page.dart';
+import 'package:virtual_assistance_2/helpers/dependecies.dart' as dep;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dep.init();
-  runApp(const MyApp());
+  dep.init();
+  runApp(MyApp());
+}
+
+Future<void> init() async {
+  Get.lazyPut(() => ApiClient(appBaseUrl: AppConstants.BASE_URL));
+  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), appBaseUrl: AppConstants.BASE_URL));
+  Get.lazyPut(() => AuthController());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -20,49 +36,48 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // Get.find<FoodController>().getFoodList();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UserModel?>(
-        future: AuthRepo.getUserInstance(),
-        builder: (context, snap) {
-          if (snap.hasData) {
-            return GetMaterialApp(
-              // initialBinding: InitilBindings(),
-
-              debugShowCheckedModeBanner: false,
-              title: 'Online Ordering App',
-              theme: ThemeData(
-                primarySwatch: Colors.orange,
-              ),
-              home: SplashScreen(),
-              // home: HomePage(),
-              // home: Home(),
-              //  initialRoute: RouteHelper.initial,
-              // getPages: RouteHelper.routes,
-              // home: RegisterPage(),
-            );
-          }
+    return FutureBuilder(
+      future: AuthRepo.getUserInstance(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
           return GetMaterialApp(
-            // initialBinding: InitilBindings(),
             debugShowCheckedModeBanner: false,
-           // title: 'Online Ordering App',
-            theme: ThemeData(
-              primarySwatch: Colors.orange,
+            title: 'Mental Health Assistance',
+            theme: ThemeData.light().copyWith(
+              scaffoldBackgroundColor: Pallete.whiteColor,
+              appBarTheme: AppBarTheme(
+                backgroundColor: Pallete.whiteColor,
+              ),
             ),
-            // home: LoginPage(),
-            home: SplashScreen(),
-            // home: Home(),
-            //initialRoute: RouteHelper.homeScreen,
-            // initialRoute: RouteHelper.userProfile,
-            //getPages: RouteHelper.routes,
-            // home: RegisterPage(),
+            initialRoute: '/',
+            getPages: [
+              GetPage(name: '/', page: () => SplashScreen()),
+              GetPage(name: '/login', page: () => LoginScreen()),
+              GetPage(name: '/signup', page: () => SignupScreen()),
+              GetPage(name: '/home', page: () => HomeScreen()),
+            ],
           );
-        });
+        }
+        // Handle other cases if needed
+        return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Mental Health Assistance',
+            theme: ThemeData.light().copyWith(
+              scaffoldBackgroundColor: Pallete.whiteColor,
+              appBarTheme: AppBarTheme(
+                backgroundColor: Pallete.whiteColor,
+              ),
+            ),
+            initialRoute: '/',
+            getPages: [
+              GetPage(name: '/', page: () => SplashScreen()),
+              GetPage(name: '/login', page: () => LoginScreen()),
+              GetPage(name: '/signup', page: () => SignupScreen()),
+              GetPage(name: '/home', page: () => HomeScreen()),
+            ],
+          ); // Placeholder while loading
+      },
+    );
   }
 }

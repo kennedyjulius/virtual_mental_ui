@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:virtual_assistance_2/Screens/authentication/signup_screen.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
+import 'package:virtual_assistance_2/controllers/auth_controller_firebase.dart';
 import 'package:virtual_assistance_2/controllers/authentication_controller.dart';
 import 'package:virtual_assistance_2/model/login_model.dart';
 import 'package:virtual_assistance_2/model/user_model.dart';
@@ -18,30 +19,8 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({Key? key}) : super(key: key);
 
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-
-  Future<UserModel?> _login() async {
-    var authController = Get.find<AuthController>();
-
-    String username = emailController.text.trim();
-    String password = passwordController.text.trim();
-
-    if (username.isEmpty) {
-      showCustomSnackBar("Enter email", title: "Email");
-    } else if (!GetUtils.isEmail(username)) {
-      showCustomSnackBar("Enter valid email", title: "Email");
-    } else if (password.isEmpty) {
-      showCustomSnackBar("Enter password", title: "Pasword");
-    } else {
-      UserLogin userLogin = UserLogin(username: username, password: password);
-      var userModel = await authController.login(userLogin);
-      print(userModel);
-
-      return userModel;
-    }
-    return null;
-  }
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +52,10 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 MyformField(
                   hintText: "Email",
-                  controller: emailController,
+                  controller: emailcontroller,
                   obscureText: false,
                   suffixIcon: IconButton(
-                    onPressed: () => emailController.clear(),
+                    onPressed: () => emailcontroller.clear(),
                     icon: const Icon(Icons.clear),
                   ),
                   prefixIcon: const Icon(Icons.email),
@@ -84,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 MyformField(
                   hintText: "Password",
-                  controller: passwordController,
+                  controller: passwordcontroller,
                   obscureText: _obscureText,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -100,13 +79,8 @@ class LoginScreen extends StatelessWidget {
                 CustomButton(
                   text: "Login",
                   ontap: () async {
-                    var user = await _login();
-                    if (user != null) {
-                      Get.to(const HomeScreen());
-                    } else {
-                      showCustomSnackBar("invalid creditials");
-                      return;
-                    }
+                    AuthController.instance.login(emailcontroller.text.trim(),
+                        passwordcontroller.text.trim());
                   },
                 ),
                 const SizedBox(height: 20),
