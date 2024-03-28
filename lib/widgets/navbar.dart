@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:virtual_assistance_2/Screens/authentication/login_screen.dart';
 import 'package:virtual_assistance_2/Screens/otherScreens/account_screem.dart';
+import 'package:virtual_assistance_2/controllers/auth_controller_firebase.dart';
 
 import 'package:virtual_assistance_2/utils/colors.dart';
 
@@ -27,16 +29,16 @@ class NavBar extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.share),
-            title: Text("Share"),
-            onTap: () {
-              Get.snackbar("Alert Message", "Share to others Comming Soon");
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.share),
+          //   title: Text("Share"),
+          //   onTap: () {
+          //     Get.snackbar("Alert Message", "Share to others Comming Soon");
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.person),
-            title: Text("Personal Details"),
+            title: Text("Counselor Details"),
             onTap: () {
               Get.to(AccountScreen());
             },
@@ -45,7 +47,10 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text("Log Out"),
-            onTap: () => print("You have logged out"),
+            onTap: () {
+              AuthController.instance.logOut();
+              Get.to(LoginScreen());
+            },
           ),
         ],
       ),

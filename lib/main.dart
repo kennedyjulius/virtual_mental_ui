@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:virtual_assistance_2/controllers/auth_controller_firebase.dart';
+import 'package:virtual_assistance_2/service/firebase_service.dart';
 
 
 import 'package:virtual_assistance_2/utils/colors.dart';
@@ -17,10 +19,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyAUwWrwmbC64fGiVP7hdZx6TuqkVDXIiUI",
-      appId: "1:948486970016:android:c1d382eab3534bf53007c5",
-      messagingSenderId: "948486970016",
-      projectId: "virtual-mch-handbook",
+      apiKey: "AIzaSyAHoT9PrH4JN1CGgpRjXU_QNxekIk3UGUQ",
+      appId: "1:705722007945:android:79a0768739457e8cfba158",
+      messagingSenderId: "705722007945",
+      projectId: "brightmain-8c5f4",
     ),
   ).then((value) => Get.put(AuthController()));
 
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       title: 'Mental Health Assistance',
       theme: ThemeData.light().copyWith(
@@ -51,6 +54,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/signup', page: () => SignupScreen()),
         GetPage(name: '/home', page: () => HomeScreen()),
       ],
+       // Bind the UserDataService to the GetMaterialApp
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut<UserDataService>(() => UserDataService());
+      }
+      )
     );
   }
 }

@@ -10,7 +10,7 @@ import 'package:virtual_assistance_2/Screens/otherScreens/home_screen.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
- // late Rx<User?> _user;
+ late Rx<User?> _user;
   FirebaseAuth auth = FirebaseAuth.instance;
 
   void register(String username, String email, String password) async {

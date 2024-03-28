@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
           SliverAppBar(
             floating: true,
-            title: BounceInDown(child: const Text("Allen the ChatBot")),
+            title: BounceInDown(child: const Text("Mental ChatBot System")),
             centerTitle: true,
             pinned: true,
           ),
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           .copyWith(topLeft: Radius.zero),
                     ),
                     child: const Text(
-                      "Good Afternoon, How can I help you with your Mental Health Today ?.",
+                      "Good Afternoon  How can I help you with your Mental Health Today ?.",
                       style: TextStyle(
                         color: Pallete.mainFontColor,
                         fontSize: 25,

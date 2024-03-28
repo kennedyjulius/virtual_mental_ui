@@ -42,11 +42,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       color: Colors.black12,
                       fontWeight: FontWeight.normal),
                       SizedBox(height: 10,),
-                      CustomTextWidget(
-                      text: "kennedymutugi111@gmail.com",
-                      size: 14,
-                      color: Colors.black12,
-                      fontWeight: FontWeight.w100)
+                      // CustomTextWidget(
+                      // text: "kennedymutugi111@gmail.com",
+                      // size: 14,
+                      // color: Colors.black12,
+                      // fontWeight: FontWeight.w100)
                 ],
               ),
             ),
